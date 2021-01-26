@@ -1,5 +1,6 @@
 import os
 HOME = os.getcwd()+"/2D-NACA0012/RANS"
+os.chdir(HOME)
 os.chdir("aeroOnly")
 os.chdir("pureSU2")
 os.system("mpirun -np 38 SU2_CFD fluid.cfg > log.txt")
