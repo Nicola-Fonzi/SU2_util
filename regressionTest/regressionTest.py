@@ -6,6 +6,7 @@ def main():
     parser=OptionParser()
     parser.add_option("--clean", action="store_true",
                       help="Specify if we only want to clean the directories", dest="clean", default=False)
+    (options, args)=parser.parse_args()
 
     HOME = "/scratch/aero/nfonzi/SU2_util/regressionTest/2D-NACA0012/RANS"
     testList = []
