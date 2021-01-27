@@ -10,10 +10,10 @@ def main():
     HOME = "/scratch/aero/nfonzi/SU2_util/regressionTest/2D-NACA0012/RANS"
     testList = []
 
-    testList.append("/aeroOnly/pureSU2")
-    testList.append("/aeroOnly/interface")
-    testList.append("/static_aeroelasticity")
-    testList.append("/forced_sine")
+    #testList.append("/aeroOnly/pureSU2")
+    #testList.append("/aeroOnly/interface")
+    #testList.append("/static_aeroelasticity")
+    #testList.append("/forced_sine")
     testList.append("/dynamic_aeroelasticity/Ma01")
     testList.append("/dynamic_aeroelasticity/Ma02")
     testList.append("/dynamic_aeroelasticity/Ma03")
