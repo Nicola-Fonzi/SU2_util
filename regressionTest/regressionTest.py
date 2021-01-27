@@ -1,5 +1,5 @@
 import os
-from optpars import OptionParser
+from optparse import OptionParser
 
 def main():
 
