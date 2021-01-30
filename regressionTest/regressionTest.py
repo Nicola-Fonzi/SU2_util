@@ -13,8 +13,8 @@ def main():
 
     parser.add_argument("-r", "--required",
                       dest="tests",
-                      choices=["aeroOnly", "static", "forced","dynamicRans","dynamicEuler"],
-                      default=["aeroOnly", "static", "forced","dynamicRans","dynamicEuler"],
+                      choices=["structure","aeroOnly", "static", "forced","dynamicRans","dynamicEuler"],
+                      default=["structure","aeroOnly", "static", "forced","dynamicRans","dynamicEuler"],
                       nargs="+",
                       help='Regression tests required',)
 
@@ -23,6 +23,9 @@ def main():
     HOME = "/scratch/aero/nfonzi/SU2_util/regressionTest/2D-NACA0012"
     testList = []
 
+    if "structure" in args.tests:
+        testList.append("/Structure_Only/dryRunStruct")
+        testList.append("/Structure_Only/nonDiagDamp")
     if "aeroOnly" in args.tests:
         testList.append("/RANS/aeroOnly/pureSU2")
         testList.append("/RANS/aeroOnly/interface")
@@ -51,13 +54,17 @@ def main():
         elif args.short:
             if os.path.isfile("fsi_short.cfg"):
                 os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi_short.cfg > log.txt")
-            else:
+            elif os.path.isfile("fluid_short.cfg"):
                 os.system("mpirun -np 38 SU2_CFD fluid_short.cfg > log.txt")
+            else:
+                os.system("python3 runStruct.py")
         else:
             if os.path.isfile("fsi.cfg"):
                 os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt")
-            else:
+            elif os.path.isfile("fluid.cfg"):
                 os.system("mpirun -np 38 SU2_CFD fluid.cfg > log.txt")
+            else:
+                os.system("python3 runStruct.py")
     return
 
 if __name__ == '__main__':

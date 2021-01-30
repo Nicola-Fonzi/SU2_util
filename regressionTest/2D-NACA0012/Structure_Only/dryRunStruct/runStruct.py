@@ -1,11 +1,10 @@
 import math
 
-CSD_ConFile = '/mnt/d/Desktop/NACA0012_new/validazione_StructuralSolver/solid.cfg'
-
-
+CSD_ConFile = 'solid.cfg'
 
 
 import pysu2_nastran
+
 imposed_motion = 0
 SolidSolver = pysu2_nastran.Solver(CSD_ConFile,imposed_motion)
 
@@ -21,10 +20,10 @@ SolidSolver.setInitialDisplacements()
 
 
 while TimeIter <= NbTimeIter:
-	
+
 	SolidSolver.run(time)
 	SolidSolver.writeSolution(time, TimeIter, NbTimeIter)
 	SolidSolver.updateSolution()
-	
+
 	TimeIter += 1
 	time += deltaT
