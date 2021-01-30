@@ -1,9 +1,6 @@
-import math
+import pysu2_nastran
 
 CSD_ConFile = 'solid.cfg'
-
-
-import pysu2_nastran
 
 imposed_motion = 0
 SolidSolver = pysu2_nastran.Solver(CSD_ConFile,imposed_motion)
@@ -15,9 +12,7 @@ NbTimeIter = int((totTime/deltaT)-1)
 time = 0.0
 TimeIter = 0
 
-
 SolidSolver.setInitialDisplacements()
-
 
 while TimeIter <= NbTimeIter:
 
