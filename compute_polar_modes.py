@@ -35,8 +35,8 @@ def main():
 
     # Main variables
     alpha = np.array([1.03])
-    Modes = [ i for i in range(25,42)]
-    Restart = False
+    Modes = [ i for i in range(25,39)]
+    Restart = True
     NumbProc = 38
     HOME = os.getcwd()
     FluidCfg = HOME+"/fluid.cfg"
