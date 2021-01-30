@@ -57,14 +57,14 @@ def main():
             elif os.path.isfile("fluid_short.cfg"):
                 os.system("mpirun -np 38 SU2_CFD fluid_short.cfg > log.txt")
             else:
-                os.system("python3 runStruct.py")
+                os.system("python3 runStruct.py > log.txt")
         else:
             if os.path.isfile("fsi.cfg"):
                 os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt")
             elif os.path.isfile("fluid.cfg"):
                 os.system("mpirun -np 38 SU2_CFD fluid.cfg > log.txt")
             else:
-                os.system("python3 runStruct.py")
+                os.system("python3 runStruct.py > log.txt")
     return
 
 if __name__ == '__main__':
