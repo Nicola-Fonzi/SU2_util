@@ -1,0 +1,16 @@
+In this case, a very tight tolerance on the coupling must be used. Indeed, if the system is oscillating
+during convergence, there will be a point (an extremum) where it is not moving much. In the unsteady computation
+this will stop the FSI loop and we will switch to a next time step... in the steady computation we will stop
+the computation completely -> we need tight tollerances
+
+We do not care so much about the time step size. In the unsteady computation this is stringly related to the
+vibration modes in the system. The usual stuff that we have to resolve, at least, double the most important
+frequency. Both for nyquist and for the damping of the integrator. Here we only care about reaching the
+convergence fast -> use big step
+
+
+In this case we have the frequency at about 8Hz, let's make 10, so we would need 20 -> 50ms
+
+The theoretical response is:
+((0.5*1.225*(0.05*sqrt(1.4*287*293))^2*0.349388748)/205.4) = 0.3066
+((0.5*1.225*(0.05*sqrt(1.4*287*293))^2*0.005629448)/2025) = 5.0115e-04
