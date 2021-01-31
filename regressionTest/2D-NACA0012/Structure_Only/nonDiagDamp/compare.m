@@ -1,24 +1,29 @@
-clear all;
+clear variables;
 close all;
 clc;
 
-filename = 'D:\Desktop\test_NonDiagonalDamping\StructHistoryModal.dat';
+nmodes = 6;
 
-if exist(filename,'file')
-    modify_pch = 0;
-else
-    modify_pch = 1;
+filename = 'StructHistoryModal.dat';
+for i = 1:nmodes
+    [t,q(:,i),qdot(:,i),qddot(:,i)] = readHistoryModal(filename,nmodes,i,false);
 end
 
-w = 45;
-F = 0;
-nmodes = 2;
+M = [
+1.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00 0.500000E+00
+0.000000E+00  1.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00 0.000000E+00
+0.000000E+00  0.000000E+00  1.000000E+00  0.000000E+00  0.000000E+00 0.000000E+00
+0.000000E+00  0.000000E+00  0.000000E+00  1.000000E+00  0.000000E+00 0.000000E+00
+0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00  1.000000E+00 0.000000E+00
+0.500000E+00  0.000000E+00  0.000000E+00  0.000000E+00  0.000000E+00 1.000000E+00];
 
-rng(10.0)
-ii = rand(nmodes);
-M = ii*ii.';
-ii = rand(nmodes);
-K = ii*ii.';
+K = [
+91875.843505  -2178.564083  -14820.2994   12881.365936  36920.941062 21360.676490
+-2178.564083  66049.320221  16822.873397  31219.05083   -36882.99376 -11255.45269
+-14820.29948  16822.873397  27033.413749  -6612.498377  -5602.535177 -2457.475726
+12881.365936  31219.050836  -6612.498377  53627.964569  -2625.925607 -10449.83333
+36920.941062  -36882.99376  -5602.535177  -2625.925607  85752.469497 -9235.602542
+21360.676492  -11255.45269  -2457.475726  -10449.83333  -9235.602542 34914.588656];
 
 [V,D] = eig(M\K);
 Mtil = V.'*M*V;
@@ -27,30 +32,17 @@ for i = 1:nmodes
     V(:,i) = V(:,i)./sqrt(m(i));
 end
 
-y0 = [1;3;0;0]; % modificare per nmodes > 2
-y0_SU2 = V*y0(1:2);
+y0_SU2 = [1.0; 2.0; 3.0; 2.0; 1.0; 0.5];
+y0 = [V\y0_SU2; zeros(nmodes,1)];
 
-if modify_pch == 1
-    copyfile('modal_original.pch','modal.pch');
-    appendMatricesToPunch('modal.pch',cd,K,M)
-    return
-else
-    [t,q1,qdot1,qddot1] = readHistoryModal(filename,nmodes,1,false);
-    [t,q2,qdot2,qddot2] = readHistoryModal(filename,nmodes,2,false);
-end
-
-Q = V\[q1';q2'];
-q1 = Q(1,:);
-q2 = Q(2,:);
-Qdot = V\[qdot1';qdot2'];
-qdot1 = Qdot(1,:);
-qdot2 = Qdot(2,:);
-Qddot = V\[qddot1';qddot2'];
-qddot1 = Qddot(1,:);
-qddot2 = Qddot(2,:);
+Q = V\q';
+Qdot = V\qdot';
+Qddot = V\qddot';
 
 Mmod = V.'*M*V;
+Mmod = diag(diag(Mmod));
 Kmod = V.'*K*V;
+Kmod = diag(diag(Kmod));
 csi = 0.01;
 Cmod = 2*csi*sqrt(Kmod);
 
@@ -58,39 +50,20 @@ A = [zeros(nmodes)    eye(nmodes);
      -inv(Mmod)*Kmod   -inv(Mmod)*Cmod];
 tspan = [0,t(end)];
 opts = odeset('AbsTol',1e-9,'MaxStep',1e-3);
-opts = odeset('AbsTol',1e-9);
-[t_ode,y_ode] = ode45(@(t,y) forced_model(t,y,A,Mmod,w,F), tspan, y0, opts);
-figure();
-subplot(1,2,1);
-hold on;
-plot(t,q1,'b--','MarkerSize',1);
-plot(t_ode,y_ode(:,1),'r');
-legend('SU2','ode45');
-title('Mode 1');
-subplot(1,2,2);
-hold on;
-plot(t,qdot1,'b--','MarkerSize',1);
-plot(t_ode,y_ode(:,3),'r');
-legend('SU2','ode45');
-title('Mode 1 derivative');
-figure();
-subplot(1,2,1);
-hold on;
-plot(t,q2,'b--','MarkerSize',1);
-plot(t_ode,y_ode(:,2),'r');
-legend('SU2','ode45');
-title('Mode 2');
-subplot(1,2,2);
-hold on;
-plot(t,qdot2,'b--','MarkerSize',1);
-plot(t_ode,y_ode(:,4),'r');
-legend('SU2','ode45');
-title('Mode 2 derivative');
+[t_ode,y_ode] = ode45(@(t,y) A*y, tspan, y0, opts);
 
-function ydot = forced_model(t,y,A,M,w,F)
-    f1 = F * sin(w*t);
-    f2 = F/2 * sin(2*w*t);
-    f = [f1;f2]; % modificare per nmodes > 2
-    B = [zeros(2,1); M\f]; % modificare per nmodes > 2
-    ydot = A*y+B;
+for i = 1:nmodes
+    figure(i);
+    subplot(1,2,1);
+    hold on;
+    plot(t,Q(i,:),'b--','MarkerSize',1);
+    plot(t_ode,y_ode(:,i),'r');
+    legend('SU2','ode45');
+    title(sprintf('Mode %d',i));
+    subplot(1,2,2);
+    hold on;
+    plot(t,Qdot(i,:),'b--','MarkerSize',1);
+    plot(t_ode,y_ode(:,i+nmodes),'r');
+    legend('SU2','ode45');
+    title(sprintf('Mode %d derivative',i));
 end
