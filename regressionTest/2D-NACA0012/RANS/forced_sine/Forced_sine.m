@@ -18,7 +18,7 @@ dt = 0.001;
 %% Lift
 
 
-res_path = 'D:\Desktop\PhD\CFD Flutter\Validation\NEW\2D-NACA0012\RANS\forced_sine\';
+res_path = '';
 filename = fullfile(res_path,'history.csv');
 fid = fopen(filename);
 data = textscan(fid,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f',...
@@ -48,7 +48,3 @@ ylabel('C_l');
 
 plot(t,alpha);
 legend('SU2','Theodorsen','alpha');
-
-
-
-

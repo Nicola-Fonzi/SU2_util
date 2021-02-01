@@ -12,5 +12,9 @@ convergence fast -> use big step
 In this case we have the frequency at about 8Hz, let's make 10, so we would need 20 -> 50ms
 
 The theoretical response is:
-((0.5*1.225*(0.05*sqrt(1.4*287*293))^2*0.349388748)/205.4) = 0.3066
-((0.5*1.225*(0.05*sqrt(1.4*287*293))^2*0.005629448)/2025) = 5.0115e-04
+((0.5*1.225*(0.05*sqrt(1.4*287*293.15))^2*1*2*pi*3*pi/180)/205.4) = 0.2889
+
+The X-FOIL response is:
+
+((0.5*1.225*(0.05*sqrt(1.4*287*293.15))^2*1*0.3201)/205.4) = 0.2811
+((0.5*1.225*(0.05*sqrt(1.4*287*293))^2*1*0.005)/2025) = 4.0e-04
