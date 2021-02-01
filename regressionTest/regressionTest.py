@@ -67,6 +67,5 @@ def main():
                 os.system("python3 runStruct.py > log.txt")
     return
 
-
 if __name__ == '__main__':
     main()
