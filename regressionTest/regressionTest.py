@@ -1,5 +1,6 @@
 import os
 import argparse
+import subprocess
 
 def main():
 
@@ -52,12 +53,22 @@ def main():
         if args.clean:
             os.system("rm *vtu FSI* Struct* log* histo*")
         elif args.short:
-            if os.path.isfile("fsi_short.cfg"):
-                os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi_short.cfg > log.txt")
-            elif os.path.isfile("fluid_short.cfg"):
-                os.system("mpirun -np 38 SU2_CFD fluid_short.cfg > log.txt")
+            if os.path.isfile("fsi.cfg"):
+                try:
+                  subprocess.run("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt" \
+                  , shell=True, timeout=1600)
+                except TimeoutExpired:
+                  pass
+            elif os.path.isfile("fluid.cfg"):
+                try:
+                  subprocess.run("mpirun -np 38 SU2_CFD fluid.cfg > log.txt", shell=True, timeout=1600)
+                except TimeoutExpired:
+                  pass
             else:
-                os.system("python3 runStruct.py > log.txt")
+                try:
+                  subprocess.run("python3 runStruct.py > log.txt", shell=True, timeout=1600)
+                except TimeoutExpired:
+                  pass
         else:
             if os.path.isfile("fsi.cfg"):
                 os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt")
