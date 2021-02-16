@@ -9,9 +9,6 @@ def main():
     parser.add_argument("-c","--clean", action="store_true",
                       help="Specify if we only want to clean the directories", dest="clean", default=False)
 
-    parser.add_argument("-s","--short", action="store_true",
-                      help="Specify if we only want to perform few steps for verification", dest="short", default=False)
-
     parser.add_argument("-r", "--required",
                       dest="tests",
                       choices=["structure","aeroOnly", "static", "forced","dynamicRans","dynamicEuler"],
@@ -21,7 +18,7 @@ def main():
 
     args=parser.parse_args()
 
-    HOME = "/scratch/aero/nfonzi/SU2_util/regressionTest/2D-NACA0012"
+    HOME = os.getcwd()+"/2D-NACA0012"
     testList = []
 
     if "structure" in args.tests:
@@ -49,27 +46,10 @@ def main():
         testList.append("/Euler/dynamic_aeroelasticity/Ma0364")
 
     for test in testList:
-        print("Testing now"+test)
+        print("Testing now: "+test)
         os.chdir(HOME+test)
         if args.clean:
             os.system("rm *vtu FSI* Struct* log* histo*")
-        elif args.short:
-            if os.path.isfile("fsi.cfg"):
-                try:
-                  subprocess.run("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt" \
-                  , shell=True, timeout=1600)
-                except TimeoutExpired:
-                  pass
-            elif os.path.isfile("fluid.cfg"):
-                try:
-                  subprocess.run("mpirun -np 38 SU2_CFD fluid.cfg > log.txt", shell=True, timeout=1600)
-                except TimeoutExpired:
-                  pass
-            else:
-                try:
-                  subprocess.run("python3 runStruct.py > log.txt", shell=True, timeout=1600)
-                except TimeoutExpired:
-                  pass
         else:
             if os.path.isfile("fsi.cfg"):
                 os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt")
