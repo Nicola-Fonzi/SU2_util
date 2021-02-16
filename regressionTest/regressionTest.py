@@ -49,6 +49,7 @@ def main():
         testList.append("/Euler/dynamic_aeroelasticity/Ma0364")
 
     for test in testList:
+        print("Testing now"+test)
         os.chdir(HOME+test)
         if args.clean:
             os.system("rm *vtu FSI* Struct* log* histo*")
