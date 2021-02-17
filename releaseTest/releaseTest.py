@@ -1,6 +1,6 @@
 import os
 import argparse
-import subprocess
+import numpy as np
 
 def main():
 
@@ -9,8 +9,8 @@ def main():
     parser.add_argument("-c","--clean", action="store_true",
                       help="Specify if we only want to clean the directories", dest="clean", default=False)
 
-    parser.add_argument("-p","--parallel", action="store_true",
-                      help="Specify if SU2 was built in parallel or not", dest="parallel", default=True)
+    parser.add_argument("-s","--serial", action="store_true",
+                      help="Specify if SU2 was built in serial or not", dest="serial", default=False)
 
     args=parser.parse_args()
 
@@ -32,7 +32,7 @@ def main():
         if args.clean:
             os.system("rm *vtu FSI* Struct* log* histo*")
         else:
-            if not args.parallel:
+            if args.serial:
                 callSerialRegression(test)
                 compareResults(test,"serial")
             else:
@@ -64,7 +64,70 @@ def callParallelRegression(test):
     return
 
 def compareResults(test,mode):
-    if mode=="serial"
+
+    old_fluid = []
+    new_fluid = []
+    old_solid = []
+    new_solid = []
+
+    new_fluid = readHistory(test+'/history.dat')
+    new_fluid = readHistory(test+'/StructHistoryModal.dat')
+
+    if mode=="serial":
+
+        old_fluid = readHistory(test+'/ReferenceValues/history_serial.dat')
+        old_fluid = readHistory(test+'/ReferenceValues/StructHistoryModal_serial.dat')
+
+    else:
+
+        old_fluid = readHistory(test+'/ReferenceValues/history_parallel.dat')
+        old_fluid = readHistory(test+'/ReferenceValues/StructHistoryModal_parallel.dat')
+
+    if len(new_fluid)>0:
+        if len(old_fluid)>0:
+            passed = compareHistory(old_fluid,new_fluid)
+        else:
+            print("Old fluid solution could not be found")
+    else:
+        if len(old_fluid)>0:
+            print("New fluid solution could not be found")
+
+    if len(new_solid)>0:
+        if len(old_solid)>0:
+            passed = compareHistory(old_solid,new_solid)
+        else:
+            print("Old solid solution could not be found")
+    else:
+        if len(old_solid)>0:
+            print("New solid solution could not be found")s
+
+
+    if passed:
+        print("                         SUCCESS")
+    else:
+        print("                         FAILED")
+
+    return
+
+
+def compareHistory(old,new):
+
+    tol = 1e-6
+
+    old = np.array(old)
+    new = np.array(new)
+
+    passed = (abs(old-new) <= tol).all()
+
+    return passed
+
+def readHistory(file):
+
+    with open(file, 'r') as f:
+        list = [[num for num in line.split(',')] for line in f if line.strip() != "" ]
+
+    return list
+
 
 if __name__ == '__main__':
     main()
