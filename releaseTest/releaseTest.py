@@ -27,6 +27,12 @@ def main():
     testList.append("morphed_profile")
     testList.append("dryStructuralRun")
 
+    os.system("cat BSCW_mesh_aa BSCW_mesh_ab > BSCW.tar.gz")
+    os.system("tar -xf BSCW.tar.gz")
+    os.system("cp coarser.su2 forced_BSCW")
+    os.system("mv coarser.su2 dynamic_BSCW")
+    os.system("rm BSCW.tar.gz")
+
     for test in testList:
         print("Testing now: "+test)
         os.chdir(HOME+test)
@@ -39,6 +45,9 @@ def main():
             else:
                 callParallelRegression(test)
                 compareResults(test,"parallel")
+
+    print("DONE")
+
     return
 
 
