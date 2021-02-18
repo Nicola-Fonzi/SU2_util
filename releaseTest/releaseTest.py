@@ -27,7 +27,7 @@ def main():
     testList.append("morphed_profile")
     testList.append("dryStructuralRun")
 
-    os.system("cat BSCW_mesh_aa BSCW_mesh_ab BSCW_mesh_ac BSCW_mesh_ad BSCW_mesh_ae> BSCW.tar.gz")
+    os.system("cat BSCW_mesh_aa BSCW_mesh_ab BSCW_mesh_ac BSCW_mesh_ad BSCW_mesh_ae > BSCW.tar.gz")
     os.system("tar -xf BSCW.tar.gz")
     os.system("cp coarser.su2 forced_BSCW")
     os.system("mv coarser.su2 dynamic_BSCW")
