@@ -149,9 +149,9 @@ def readHistory(file):
 
     with open(file, 'r') as f:
         if file=="history.dat" or file == "history_serial.dat" or file == "history_parallel.dat":
-            list = [[num for num in line.split(',')] for line in f if line.strip() != "" ]
+            list = [[num for num in line.strip().split(',')] for line in f if line.strip() != "" ]
         else:
-            list = [[num for num in line.split(' ')] for line in f if line.strip() != "" ]
+            list = [[num for num in line.strip().split('\t')] for line in f if line.strip() != "" ]
 
     index = 0
     if len(list[0]) == 1:
