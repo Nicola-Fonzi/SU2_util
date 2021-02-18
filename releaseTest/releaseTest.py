@@ -115,10 +115,16 @@ def compareResults(mode,test):
             print("New solid solution could not be found")
 
 
-    if passed_fluid and passed_solid:
-        print("                         SUCCESS")
+    if test != "dryStructuralRun":
+        if passed_fluid and passed_solid:
+            print("                         SUCCESS")
+        else:
+            print("                         FAILED")
     else:
-        print("                         FAILED")
+        if passed_solid:
+            print("                         SUCCESS")
+        else:
+            print("                         FAILED")
 
     return
 
