@@ -43,7 +43,7 @@ def main():
                 callSerialRegression()
                 compareResults("serial")
             else:
-                callParallelRegression(test)
+                callParallelRegression()
                 compareResults("parallel")
 
     print("DONE")
