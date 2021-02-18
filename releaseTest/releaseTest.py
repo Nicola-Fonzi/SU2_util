@@ -159,7 +159,10 @@ def readHistory(file):
     else:
         pass
     keys = list[index]
-    A = np.asarray(list[index+1:],dtype=float)
+    A = np.zeros((len(list)-1-index,len(list[0])))
+    for row in range(index+1,len(list)):
+        for column in len(list[0])
+            A[row][column] = float(list[row][column])
     D = {}
     i = 0
     for key in keys:
