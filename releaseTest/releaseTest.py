@@ -75,23 +75,23 @@ def callParallelRegression(test):
 
 def compareResults(test,mode):
 
-    old_fluid = []
-    new_fluid = []
-    old_solid = []
-    new_solid = []
+    old_fluid = {}
+    new_fluid = {}
+    old_solid = {}
+    new_solid = {}
 
-    new_fluid = readHistory(test+'/history.dat')
-    new_fluid = readHistory(test+'/StructHistoryModal.dat')
+    new_fluid = readHistory('history.dat')
+    new_fluid = readHistory('StructHistoryModal.dat')
 
     if mode=="serial":
 
-        old_fluid = readHistory(test+'/ReferenceValues/history_serial.dat')
-        old_solid = readHistory(test+'/ReferenceValues/StructHistoryModal_serial.dat')
+        old_fluid = readHistory('ReferenceValues/history_serial.dat')
+        old_solid = readHistory('ReferenceValues/StructHistoryModal_serial.dat')
 
     else:
 
-        old_fluid = readHistory(test+'/ReferenceValues/history_parallel.dat')
-        old_solid = readHistory(test+'/ReferenceValues/StructHistoryModal_parallel.dat')
+        old_fluid = readHistory('ReferenceValues/history_parallel.dat')
+        old_solid = readHistory('ReferenceValues/StructHistoryModal_parallel.dat')
 
     if len(new_fluid)>0:
         if len(old_fluid)>0:
