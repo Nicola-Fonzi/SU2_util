@@ -124,25 +124,36 @@ def compareHistory(D,D2):
 
     tol = 1e-6
 
-    passed = True
+    passed = False
     for key in D.keys():
         if key in D2.keys():
             old = D[key]
             new = D2[key]
-    if not (math.isnan(old[0]) or math.isnan(new[0])):
-        if len(old) == len(new):
-            if not (abs(old-new) <= tol).all():
-                passed = False
-                return passed
-        else:
-            passed = False
-            print('Warning: not consistent number of iterations')
-            return passed
-    elif ( (math.isnan(old[0]) and not math.isnan(new[0])) or (not math.isnan(old[0]) and math.isnan(new[0])) ):
-        passed = False
-        print('Warning: not consistent NAN data')
-        return passed
+            if len(old)>0:
+                if not (math.isnan(old[0]) or math.isnan(new[0])):
+                    if len(old) == len(new):
+                        if not (abs(old-new) <= tol).all():
+                            passed = False
+                            return passed
+                    else:
+                        passed = False
+                        print('Warning: not consistent number of iterations')
+                        return passed
+                elif ( (math.isnan(old[0]) and not math.isnan(new[0])) or (not math.isnan(old[0]) and math.isnan(new[0])) ):
+                    passed = False
+                    print('Warning: not consistent NAN data')
+                    return passed
+                else:
+                    passed = False
+                    print('I should not be here')
+                    return passed
+           else:
+               if len(new)>0:
+                   passed = False
+                   print("One file was empty")
+                   return passed
 
+    passed = True
     return passed
 
 def readHistory(file):
