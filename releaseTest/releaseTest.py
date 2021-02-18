@@ -81,7 +81,7 @@ def compareResults(mode):
     new_solid = {}
 
     new_fluid = readHistory('history.dat')
-    new_fluid = readHistory('StructHistoryModal.dat')
+    new_solid = readHistory('StructHistoryModal.dat')
 
     if mode=="serial":
 
