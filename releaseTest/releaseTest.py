@@ -1,6 +1,7 @@
 import os
 import argparse
 import numpy as np
+import math
 
 def main():
 
@@ -76,16 +77,16 @@ def compareResults(test,mode):
     if mode=="serial":
 
         old_fluid = readHistory(test+'/ReferenceValues/history_serial.dat')
-        old_fluid = readHistory(test+'/ReferenceValues/StructHistoryModal_serial.dat')
+        old_solid = readHistory(test+'/ReferenceValues/StructHistoryModal_serial.dat')
 
     else:
 
         old_fluid = readHistory(test+'/ReferenceValues/history_parallel.dat')
-        old_fluid = readHistory(test+'/ReferenceValues/StructHistoryModal_parallel.dat')
+        old_solid = readHistory(test+'/ReferenceValues/StructHistoryModal_parallel.dat')
 
     if len(new_fluid)>0:
         if len(old_fluid)>0:
-            passed = compareHistory(old_fluid,new_fluid)
+            passed_fluid = compareHistory(old_fluid,new_fluid)
         else:
             print("Old fluid solution could not be found")
     else:
@@ -94,7 +95,7 @@ def compareResults(test,mode):
 
     if len(new_solid)>0:
         if len(old_solid)>0:
-            passed = compareHistory(old_solid,new_solid)
+            passed_solid = compareHistory(old_solid,new_solid)
         else:
             print("Old solid solution could not be found")
     else:
@@ -102,7 +103,7 @@ def compareResults(test,mode):
             print("New solid solution could not be found")
 
 
-    if passed:
+    if passed_fluid and passed_solid:
         print("                         SUCCESS")
     else:
         print("                         FAILED")
@@ -114,10 +115,15 @@ def compareHistory(old,new):
 
     tol = 1e-6
 
-    old = np.array(old)
-    new = np.array(new)
-
-    passed = (abs(old-new) <= tol).all()
+    passed = True
+    for key in D.keys():
+        if key in D2.keys():
+            old = D[key]
+            if not math.isnan(old[0]):
+                new = D2[key]
+                if not (abs(old-new) <= tol).all():
+                    passed = False
+                    break
 
     return passed
 
@@ -126,7 +132,17 @@ def readHistory(file):
     with open(file, 'r') as f:
         list = [[num for num in line.split(',')] for line in f if line.strip() != "" ]
 
-    return list
+    keys = list[0]
+    A = np.asarray(list[1:],dtype=float)
+    D = {}
+    i = 0
+    for key in keys:
+        key = key.strip().replace('"','')
+        D[key] = A[:,i]
+        i += 1
+    hist = D
+
+    return hist
 
 
 if __name__ == '__main__':
