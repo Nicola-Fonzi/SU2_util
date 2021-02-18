@@ -99,7 +99,7 @@ def compareResults(test,mode):
             print("Old solid solution could not be found")
     else:
         if len(old_solid)>0:
-            print("New solid solution could not be found")s
+            print("New solid solution could not be found")
 
 
     if passed:
