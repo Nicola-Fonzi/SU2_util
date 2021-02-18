@@ -150,8 +150,13 @@ def readHistory(file):
     with open(file, 'r') as f:
         list = [[num for num in line.split(',')] for line in f if line.strip() != "" ]
 
-    keys = list[0]
-    A = np.asarray(list[1:],dtype=float)
+    index = 0
+    if len(list[0]) == 1:
+        index += 1
+    else:
+        pass
+    keys = list[index]
+    A = np.asarray(list[index+1:],dtype=float)
     D = {}
     i = 0
     for key in keys:
