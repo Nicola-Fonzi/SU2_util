@@ -159,10 +159,14 @@ def readHistory(file):
     else:
         pass
     keys = list[index]
-    A = np.zeros((len(list)-1-index,len(list[0])))
+    A = np.zeros((len(list)-1-index,len(list[index])))
+    rowA = 0
     for row in range(index+1,len(list)):
-        for column in range(len(list[0])):
-            A[row][column] = float(list[row][column])
+        columnA = 0
+        for column in range(len(list[index])):
+            A[rowA][columnA] = float(list[row][column])
+            columnA += 1
+        rowA += 1
     D = {}
     i = 0
     for key in keys:
