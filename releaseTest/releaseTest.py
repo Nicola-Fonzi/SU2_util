@@ -147,11 +147,11 @@ def compareHistory(D,D2):
                     passed = False
                     print('I should not be here')
                     return passed
-           else:
-               if len(new)>0:
-                   passed = False
-                   print("One file was empty")
-                   return passed
+            else:
+                if len(new)>0:
+                    passed = False
+                    print("One file was empty")
+                    return passed
 
     passed = True
     return passed
