@@ -161,7 +161,7 @@ def readHistory(file):
     keys = list[index]
     A = np.zeros((len(list)-1-index,len(list[0])))
     for row in range(index+1,len(list)):
-        for column in len(list[0])
+        for column in len(list[0]):
             A[row][column] = float(list[row][column])
     D = {}
     i = 0
