@@ -143,6 +143,8 @@ def compareHistory(D,D2):
                     passed = False
                     print('Warning: not consistent NAN data')
                     return passed
+                elif (math.isnan(old[0]) and math.isnan(new[0])):
+                    pass
                 else:
                     passed = False
                     print('I should not be here')
