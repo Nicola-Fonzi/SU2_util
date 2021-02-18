@@ -111,7 +111,7 @@ def compareResults(test,mode):
     return
 
 
-def compareHistory(old,new):
+def compareHistory(D,D2):
 
     tol = 1e-6
 
