@@ -41,10 +41,10 @@ def main():
         else:
             if args.serial:
                 callSerialRegression()
-                compareResults("serial")
+                compareResults("serial",test)
             else:
                 callParallelRegression()
-                compareResults("parallel")
+                compareResults("parallel",test)
 
     print("DONE")
 
@@ -73,24 +73,27 @@ def callParallelRegression():
 
     return
 
-def compareResults(mode):
+def compareResults(mode,test):
 
     old_fluid = {}
     new_fluid = {}
     old_solid = {}
     new_solid = {}
 
-    new_fluid = readHistory('history.dat')
+    if test != "dryStructuralRun":
+        new_fluid = readHistory('history.dat')
     new_solid = readHistory('StructHistoryModal.dat')
 
     if mode=="serial":
 
-        old_fluid = readHistory('ReferenceValues/history_serial.dat')
+        if test != "dryStructuralRun":
+            old_fluid = readHistory('ReferenceValues/history_serial.dat')
         old_solid = readHistory('ReferenceValues/StructHistoryModal_serial.dat')
 
     else:
 
-        old_fluid = readHistory('ReferenceValues/history_parallel.dat')
+        if test != "dryStructuralRun":
+            old_fluid = readHistory('ReferenceValues/history_parallel.dat')
         old_solid = readHistory('ReferenceValues/StructHistoryModal_parallel.dat')
 
     if len(new_fluid)>0:
