@@ -35,10 +35,10 @@ def main():
         else:
             if args.serial:
                 callSerialRegression(test)
-                #compareResults(test,"serial")
+                compareResults(test,"serial")
             else:
                 callParallelRegression(test)
-                #compareResults(test,"parallel")
+                compareResults(test,"parallel")
     return
 
 
