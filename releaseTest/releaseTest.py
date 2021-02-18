@@ -40,18 +40,18 @@ def main():
             os.system("rm *vtu FSI* Struct* log* histo*")
         else:
             if args.serial:
-                callSerialRegression(test)
-                compareResults(test,"serial")
+                callSerialRegression()
+                compareResults("serial")
             else:
                 callParallelRegression(test)
-                compareResults(test,"parallel")
+                compareResults("parallel")
 
     print("DONE")
 
     return
 
 
-def callSerialRegression(test):
+def callSerialRegression():
 
     if os.path.isfile("fsi.cfg"):
         os.system("python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py -f fsi.cfg > log.txt")
@@ -62,7 +62,7 @@ def callSerialRegression(test):
 
     return
 
-def callParallelRegression(test):
+def callParallelRegression():
 
     if os.path.isfile("fsi.cfg"):
         os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt")
@@ -73,7 +73,7 @@ def callParallelRegression(test):
 
     return
 
-def compareResults(test,mode):
+def compareResults(mode):
 
     old_fluid = {}
     new_fluid = {}
