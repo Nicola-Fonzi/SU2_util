@@ -119,11 +119,20 @@ def compareHistory(D,D2):
     for key in D.keys():
         if key in D2.keys():
             old = D[key]
-            if not math.isnan(old[0]):
-                new = D2[key]
-                if not (abs(old-new) <= tol).all():
-                    passed = False
-                    break
+            new = D2[key]
+    if not (math.isnan(old[0]) or math.isnan(new[0])):
+        if len(old) == len(new):
+            if not (abs(old-new) <= tol).all():
+                passed = False
+                break
+        else:
+            passed = False
+            print('Warning: not consistent number of iterations')
+            break
+    elif ( (math.isnan(old[0]) and not math.isnan(new[0])) or (not math.isnan(old[0]) and math.isnan(new[0])) ):
+        passed = False
+        print('Warning: not consistent NAN data')
+        break
 
     return passed
 
