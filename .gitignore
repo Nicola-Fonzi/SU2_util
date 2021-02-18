@@ -3,3 +3,5 @@
 *txt
 !modal.dat
 !restart_flow.dat
+!*_parallel.dat
+!*_serial.dat

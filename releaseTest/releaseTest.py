@@ -21,7 +21,7 @@ def main():
     testList.append("dynamic_NACA0012")
     testList.append("forced_NACA0012")
     testList.append("static_NACA0012")
-    testList.append("restarted_NACA0012")
+    #testList.append("restarted_NACA0012")
     testList.append("dynamic_BSCW")
     testList.append("forced_BSCW")
     testList.append("morphed_profile")
@@ -35,10 +35,10 @@ def main():
         else:
             if args.serial:
                 callSerialRegression(test)
-                compareResults(test,"serial")
+                #compareResults(test,"serial")
             else:
                 callParallelRegression(test)
-                compareResults(test,"parallel")
+                #compareResults(test,"parallel")
     return
 
 

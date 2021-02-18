@@ -34,8 +34,8 @@ import shutil
 def main():
 
     # Main variables
-    alpha = np.array([1.03])
-    Modes = [ i for i in range(25,39)]
+    alpha = np.array([3.0, 3.5, 4.0])
+    Modes = [ i for i in range(3)]
     Restart = True
     NumbProc = 38
     HOME = os.getcwd()
