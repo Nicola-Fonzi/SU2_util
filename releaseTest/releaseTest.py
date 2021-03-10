@@ -148,7 +148,9 @@ def compareHistory(D,D2):
                         passed = False
                         print('Warning: not consistent number of iterations')
                         return passed
-                elif ( (math.isnan(old[0]) and not math.isnan(new[0])) or (not math.isnan(old[0]) and math.isnan(new[0])) ):
+                elif (math.isnan(old[0]) and not math.isnan(new[0])):
+                    pass
+                elif (not math.isnan(old[0]) and math.isnan(new[0])):
                     passed = False
                     print('Warning: not consistent NAN data')
                     return passed
