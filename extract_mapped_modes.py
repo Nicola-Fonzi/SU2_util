@@ -52,8 +52,8 @@ def main():
         writeSolidCfg(mode,SolidCfg)
         HOMEMODE = os.getcwd()+"/Mode={:2.1f}".format(mode)
         os.mkdir(HOMEMODE)
-        shutil.copyfile(FluidCfg,HOMEMODE+"/fluid_new.cfg")
-        shutil.copyfile(SolidCfg,HOMEMODE+"/solid_new.cfg")
+        shutil.copyfile(FluidCfg,HOMEMODE+"/fluid.cfg")
+        shutil.copyfile(SolidCfg,HOMEMODE+"/solid.cfg")
         shutil.copyfile(MeshFile,HOMEMODE+"/airfoil.su2")
         shutil.copyfile(FsiCfg,HOMEMODE+"/fsi.cfg")
         shutil.copyfile(MeshFileNastran,HOMEMODE+"/modal.f06")
@@ -106,7 +106,7 @@ def writeFluidCfg(FluidCfg):
 
 def writeFsiCfg(FsiCfg):
     line_num = 0
-    with open(FiCfg) as configfile:
+    with open(FsiCfg) as configfile:
       while 1:
         line = configfile.readline()
         if not line:
