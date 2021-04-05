@@ -76,7 +76,7 @@ def writeFluidCfg(FluidCfg):
         line = configfile.readline()
         if not line:
           break
-        pos = line.find('INNER_ITER')
+        pos = line.find('INNER_ITER =')
         if pos  >=  0:
           break
         line_num = line_num + 1
@@ -87,7 +87,7 @@ def writeFluidCfg(FluidCfg):
         line = configfile.readline()
         if not line:
           break
-        pos = line.find('TIME_ITER')
+        pos = line.find('TIME_ITER =')
         if pos  >=  0:
           break
         line_num = line_num + 1
@@ -98,7 +98,7 @@ def writeFluidCfg(FluidCfg):
         line = configfile.readline()
         if not line:
           break
-        pos = line.find('TIME_STEP')
+        pos = line.find('TIME_STEP =')
         if pos  >=  0:
           break
         line_num = line_num + 1
