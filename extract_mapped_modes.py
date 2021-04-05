@@ -104,29 +104,29 @@ def writeFluidCfg(FluidCfg):
         line_num = line_num + 1
     replace_line(FluidCfg,line_num,"TIME_STEP = 0.001 \n")
 
-def writeFsiCfg(FluidCfg):
+def writeFsiCfg(FsiCfg):
     line_num = 0
-    with open(FluidCfg) as configfile:
+    with open(FiCfg) as configfile:
       while 1:
         line = configfile.readline()
         if not line:
           break
-        pos = line.find('UNST_TIME')
+        pos = line.find('UNST_TIME =')
         if pos  >=  0:
           break
         line_num = line_num + 1
-    replace_line(FluidCfg,line_num,"UNST_TIME = 0.001 \n")
+    replace_line(FsiCfg,line_num,"UNST_TIME = 0.001 \n")
     line_num = 0
-    with open(FluidCfg) as configfile:
+    with open(FsiCfg) as configfile:
       while 1:
         line = configfile.readline()
         if not line:
           break
-        pos = line.find('UNST_TIMESTEP')
+        pos = line.find('UNST_TIMESTEP =')
         if pos  >=  0:
           break
         line_num = line_num + 1
-    replace_line(FluidCfg,line_num,"UNST_TIMESTEP = 0.001 \n")
+    replace_line(FsiCfg,line_num,"UNST_TIMESTEP = 0.001 \n")
 
 def writeSolidCfg(mode,SolidCfg):
     line_num = 0
