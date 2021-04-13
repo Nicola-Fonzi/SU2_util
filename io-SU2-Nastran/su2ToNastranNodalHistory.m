@@ -1,4 +1,4 @@
-% \file writef06_nodalhistory.m
+% \file su2ToNastranNodalHistory.m
 %  \brief Writes the nodal displacements in Nastran-like format (.f06)
 %  \authors Vittorio Cavalieri, Nicola Fonzi
 %  \version 7.0.8 "Blackbird"
