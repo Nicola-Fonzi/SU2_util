@@ -29,8 +29,6 @@ function write_pysu2_nastran_punch(filename,K,U,ID_table)
 % to write modal model (eigenvalues and mode shapes)
 % in Nastran-like format in a .pch file
 
-Writes modal model (eigenvalues and mode shapes) in Nastran-like format (.pch)
-
 if isempty(filename)
     filename = 'model.pch';
 else
@@ -59,7 +57,7 @@ for j = 1:nmodes
     index = 1;
     for i = 1:npoints
         id = node_list(i);
-        if GridType_list(i) == 'G' 
+        if GridType_list(i) == 'G'
             fprintf(fid,'%10d       G     %13.6E     %13.6E     %13.6E%8d\n',id,...
                 U(index,j),U(index+1,j),U(index+2,j),l);
             l = l+1;
