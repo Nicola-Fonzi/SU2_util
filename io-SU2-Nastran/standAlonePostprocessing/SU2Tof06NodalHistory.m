@@ -1,5 +1,5 @@
 % \file writef06_nodalhistory.m
-%  \brief Writes the nodal displacements in Nastran-like format (.f06)
+%  \brief Writes the nodal displacements in Nastran-like history format (.f06)
 %  \authors Vittorio Cavalieri, Nicola Fonzi
 %  \version 7.0.8 "Blackbird"
 %
@@ -77,10 +77,10 @@ end
 
 fido = fopen(filename_out,'w');
 fprintf(fido,'1\n');
-fprintf(fido,'\n'); 
+fprintf(fido,'\n');
 
 for i = 1:npoints
-    
+
     id = node_list(i);
     indexS = find(i_S==id,1);
     indexG = find(i_G==id,1);
@@ -90,11 +90,11 @@ for i = 1:npoints
     fprintf(fido,'0\n');
     fprintf(fido,'      POINT-ID = %9d\n', id);
     fprintf(fido,'                                             D I S P L A C E M E N T   V E C T O R\n');
-    fprintf(fido,'\n'); 
+    fprintf(fido,'\n');
     fprintf(fido,'       TIME       TYPE          T1             T2             T3             R1             R2             R3\n');
 
     for j = 1:length(t)
-        
+
         if indexG
             fprintf(fido,'%15.6e     G   %15.6e%15.6e%15.6e%15.6e%15.6e%15.6e\n',...
                 t(j), ux(indexG,j), uy(indexG,j), uz(indexG,j), uxr(indexG,j), uyr(indexG,j), uzr(indexG,j));
