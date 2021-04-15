@@ -1,4 +1,4 @@
-% \file su2ToNastranNodalHistory.m
+% \file SU2Tof06NodalHistory.m
 %  \brief Writes the nodal displacements in Nastran-like format (.f06)
 %  \authors Vittorio Cavalieri, Nicola Fonzi
 %  \version 7.0.8 "Blackbird"
@@ -23,7 +23,7 @@
 % You should have received a copy of the GNU Lesser General Public
 % License along with SU2. If not, see <http://www.gnu.org/licenses/>.
 
-function su2ToNastranNodalHistory(filename_historymodal,filename_pch,filename_out,step_increment)
+function SU2Tof06NodalHistory(filename_historymodal,filename_pch,filename_out,step_increment)
 
 % Read the time history of the modes and a punch file
 % to write the time history of the nodal displacements
