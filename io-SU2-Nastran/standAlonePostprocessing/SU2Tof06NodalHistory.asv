@@ -54,11 +54,20 @@ i_G = unique(ID(GridType == 'G',1));
 i_S = ID(GridType == 'S',1);
 
 if nargin < 5
-    analysed_modes = size(U,2);
+    U = U(:,1:analysed_modes);
+    Ux = Ux(:,1:analysed_modes);
+    Uy = Uy(:,1:analysed_modes);
+    Uz = Uz(:,1:analysed_modes);
+    Uxr = U(:,1:analysed_modes);
+    U = U(:,1:analysed_modes);
+    U = U(:,1:analysed_modes);
+    U = U(:,1:analysed_modes);
 end
 
-for n = 1:analysed_modes
-    [t,q] = readHistoryModal(filename_historymodal,analysed_modes,n,false);
+
+nmodes = size(U,2);
+for n = 1:nmodes
+    [t,q] = readHistoryModal(filename_historymodal,nmodes,n,false);
     if n == 1
         jj = 1:step_increment:length(t);
         q_mat = zeros(n,length(jj));
@@ -67,14 +76,14 @@ for n = 1:analysed_modes
 end
 t = t(jj);
 
-ux = Ux(:,1:analysed_modes)*q_mat;
-uy = Uy(:,1:analysed_modes)*q_mat;
-uz = Uz(:,1:analysed_modes)*q_mat;
-uxr = Uxr(:,1:analysed_modes)*q_mat;
-uyr = Uyr(:,1:analysed_modes)*q_mat;
-uzr = Uzr(:,1:analysed_modes)*q_mat;
+ux = Ux*q_mat;
+uy = Uy*q_mat;
+uz = Uz*q_mat;
+uxr = Uxr*q_mat;
+uyr = Uyr*q_mat;
+uzr = Uzr*q_mat;
 if ~isempty(Usp)
-    usp = Usp(:,1:analysed_modes)*q_mat;
+    usp = Usp*q_mat;
 end
 
 
