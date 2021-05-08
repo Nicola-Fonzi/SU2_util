@@ -31,8 +31,13 @@ fid = fopen(filename);
 % A new mode starts with the keywords EIGENVALUE and MODE
 % Treat differently the scalar points, as they only have 1 degree of
 % freedom
+justRead = 0;
 while ~feof(fid)
-    card = fgetl(fid);
+    if ~justRead
+        card = fgetl(fid);
+    else
+        justRead = 0;
+    end
     if contains(card,'EIGENVALUE') && contains(card,'MODE')
         j = str2double(card(38:42));
         k = str2double(card(16:28));
@@ -96,6 +101,9 @@ while ~feof(fid)
             card = fgetl(fid);
             if card ~= -1
                 keepGoing = strcmp(card(1),' ') || contains(card,'-CONT-');
+                if contains(card,'EIGENVALUE') && contains(card,'MODE')
+                    justRead = 1;
+                end
             else
                 keepGoing = 0;
             end
