@@ -1,5 +1,0 @@
-In these simulations a different model for the flutter test was used with respect to all the other
-simulations.
-
-Indeed, in all the cases except for the flutter, a model with no static moment of inertia was used. 
-Thus the first mode was pure plunge while the second mode was pure pitch
