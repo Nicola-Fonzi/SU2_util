@@ -19,9 +19,9 @@ dt = 0.001;
 
 
 res_path = '';
-filename = fullfile(res_path,'history.csv');
+filename = fullfile(res_path,'history.dat');
 fid = fopen(filename);
-data = textscan(fid,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f',...
+data = textscan(fid,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f',...
                 'HeaderLines',2,'Delimiter',',');
 fclose(fid);
 t_iter = data{1};
