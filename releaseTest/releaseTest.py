@@ -131,7 +131,7 @@ def compareResults(mode,test):
 
 def compareHistory(D,D2):
 
-    tol = 1e-6
+    tol = 1e-4
 
     passed = False
     for key in D.keys():
@@ -141,7 +141,7 @@ def compareHistory(D,D2):
             if len(old)>0:
                 if not (math.isnan(old[0]) or math.isnan(new[0])):
                     if len(old) == len(new):
-                        if not (abs(old-new) <= tol).all():
+                        if not ((abs(old-new)/abs(old)) <= tol).all():
                             passed = False
                             return passed
                     else:
