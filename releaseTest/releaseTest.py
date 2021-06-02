@@ -21,7 +21,7 @@ def main():
     testList.append("dynamic_NACA0012")
     testList.append("forced_NACA0012")
     testList.append("static_NACA0012")
-    #testList.append("restarted_NACA0012")
+    testList.append("restart_NACA0012")
     testList.append("dynamic_BSCW")
     testList.append("forced_BSCW")
     testList.append("morphed_profile")
@@ -41,9 +41,13 @@ def main():
         else:
             if args.serial:
                 callSerialRegression()
+                if test == "restart_NACA0012":
+                    os.system("mv history* history.dat")
                 compareResults("serial",test)
             else:
                 callParallelRegression()
+                if test == "restart_NACA0012":
+                    os.system("mv history* history.dat")
                 compareResults("parallel",test)
 
     print("DONE")
