@@ -146,7 +146,10 @@ def compareHistory(D,D2):
                 if not (math.isnan(old[0]) or math.isnan(new[0])):
                     if len(old) == len(new):
                         if not (abs(old-new) <= tol).all():
-                            print("The maximum error in {} was {}".format(key,max(abs(old-new))))
+                            if mean(old):
+                              print("The maximum error in {} was {}%".format(key,max(abs(old-new))/mean(old)))
+                            else:
+                              print("The maximum error in {} was {}".format(key,max(abs(old-new))))
                             passed = False
                             return passed
                     else:
