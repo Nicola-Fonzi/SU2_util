@@ -13,10 +13,21 @@ def main():
     parser.add_argument("-s","--serial", action="store_true",
                       help="Specify if SU2 was built in serial or not", dest="serial", default=False)
 
+    parser.add_argument("-np", "--number-processors", action="store",
+                        help="Specify the number of processors", dest="np", default=10)
+
     args=parser.parse_args()
 
     HOME = os.getcwd()+"/"
     testList = []
+
+    # Find fsi_computation.py module
+    foldersInPath = os.environ['PATH'].split(':')
+    for folder in foldersInPath:
+        if os.path.exists(os.path.join(folder, 'fsi_computation.py')):
+            fileExec = os.path.join(folder, 'fsi_computation.py')
+    if 'fileExec' not in locals():
+        raise Exception("Module fsi_computation.py not found, please add to PATH")
 
     testList.append("dynamic_NACA0012")
     testList.append("forced_NACA0012")
@@ -43,12 +54,12 @@ def main():
                 callSerialRegression()
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
-                compareResults("serial",test)
+                compareResults("serial", test)
             else:
                 callParallelRegression()
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
-                compareResults("parallel",test)
+                compareResults("parallel", test)
 
     print("DONE")
 
@@ -58,7 +69,7 @@ def main():
 def callSerialRegression():
 
     if os.path.isfile("fsi.cfg"):
-        os.system("python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py -f fsi.cfg > log.txt")
+        os.system("python3 {} -f fsi.cfg > log.txt".format(args.fileExec))
     elif os.path.isfile("fluid.cfg"):
         os.system("SU2_CFD fluid.cfg > log.txt")
     else:
@@ -69,9 +80,9 @@ def callSerialRegression():
 def callParallelRegression():
 
     if os.path.isfile("fsi.cfg"):
-        os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt")
+        os.system("mpirun -np {} python3 {} --parallel -f fsi.cfg > log.txt".format(args.np, args.fileExec))
     elif os.path.isfile("fluid.cfg"):
-        os.system("mpirun -np 38 SU2_CFD fluid.cfg > log.txt")
+        os.system("mpirun -np {} SU2_CFD fluid.cfg > log.txt".format(args.np))
     else:
         os.system("python3 runStruct.py > log.txt")
 

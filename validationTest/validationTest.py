@@ -1,6 +1,5 @@
 import os
 import argparse
-import subprocess
 
 def main():
 
@@ -11,15 +10,26 @@ def main():
 
     parser.add_argument("-r", "--required",
                       dest="tests",
-                      choices=["structure","aeroOnly", "static", "forced","dynamicRans","dynamicEuler"],
-                      default=["structure","aeroOnly", "static", "forced","dynamicRans","dynamicEuler"],
+                      choices=["structure", "aeroOnly", "static", "forced", "dynamicRans", "dynamicEuler"],
+                      default=["structure", "aeroOnly", "static", "forced", "dynamicRans", "dynamicEuler"],
                       nargs="+",
                       help='Regression tests required',)
+
+    parser.add_argument("-np", "--number-processors", action="store",
+                        help="Specify the number of processors", dest="np", default=10)
 
     args=parser.parse_args()
 
     HOME = os.getcwd()+"/2D-NACA0012"
     testList = []
+
+    # Find fsi_computation.py module
+    foldersInPath = os.environ['PATH'].split(':')
+    for folder in foldersInPath:
+        if os.path.exists(os.path.join(folder, 'fsi_computation.py')):
+            execFile = os.path.join(folder, 'fsi_computation.py')
+    if 'execFile' not in locals():
+        raise Exception("Module fsi_computation.py not found, please add to PATH")
 
     if "structure" in args.tests:
         testList.append("/Structure_Only/dryRunStruct")
@@ -52,9 +62,9 @@ def main():
             os.system("rm *vtu FSI* Struct* log* histo*")
         else:
             if os.path.isfile("fsi.cfg"):
-                os.system("mpirun -np 38 python3 /scratch/aero/nfonzi/SU2/bin/fsi_computation.py --parallel -f fsi.cfg > log.txt")
+                os.system("mpirun -np {} python3 {} --parallel -f fsi.cfg > log.txt".format(args.np, execFile))
             elif os.path.isfile("fluid.cfg"):
-                os.system("mpirun -np 38 SU2_CFD fluid.cfg > log.txt")
+                os.system("mpirun -np {} SU2_CFD fluid.cfg > log.txt".format(args.np))
             else:
                 os.system("python3 runStruct.py > log.txt")
     return
