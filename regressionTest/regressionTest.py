@@ -51,12 +51,12 @@ def main():
             os.system("rm *vtu FSI* Struct* log* histo*")
         else:
             if args.serial:
-                callSerialRegression(args.fileExec)
+                callSerialRegression(fileExec)
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
                 compareResults("serial", test)
             else:
-                callParallelRegression(args.fileExec, args.np)
+                callParallelRegression(fileExec, args.np)
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
                 compareResults("parallel", test)
