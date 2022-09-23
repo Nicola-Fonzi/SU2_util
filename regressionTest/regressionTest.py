@@ -51,12 +51,12 @@ def main():
             os.system("rm *vtu FSI* Struct* log* histo*")
         else:
             if args.serial:
-                callSerialRegression(args)
+                callSerialRegression(args.fileExec)
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
                 compareResults("serial", test)
             else:
-                callParallelRegression(args)
+                callParallelRegression(args.fileExec, args.np)
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
                 compareResults("parallel", test)
@@ -66,10 +66,10 @@ def main():
     return
 
 
-def callSerialRegression(args):
+def callSerialRegression(fileExec):
 
     if os.path.isfile("fsi.cfg"):
-        os.system("python3 {} -f fsi.cfg > log.txt".format(args.fileExec))
+        os.system("python3 {} -f fsi.cfg > log.txt".format(fileExec))
     elif os.path.isfile("fluid.cfg"):
         os.system("SU2_CFD fluid.cfg > log.txt")
     else:
@@ -77,12 +77,12 @@ def callSerialRegression(args):
 
     return
 
-def callParallelRegression(args):
+def callParallelRegression(fileExec, np):
 
     if os.path.isfile("fsi.cfg"):
-        os.system("mpirun -np {} python3 {} --parallel -f fsi.cfg > log.txt".format(args.np, args.fileExec))
+        os.system("mpirun -np {} python3 {} --parallel -f fsi.cfg > log.txt".format(np, fileExec))
     elif os.path.isfile("fluid.cfg"):
-        os.system("mpirun -np {} SU2_CFD fluid.cfg > log.txt".format(args.np))
+        os.system("mpirun -np {} SU2_CFD fluid.cfg > log.txt".format(np))
     else:
         os.system("python3 runStruct.py > log.txt")
 
