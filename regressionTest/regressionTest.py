@@ -51,12 +51,12 @@ def main():
             os.system("rm *vtu FSI* Struct* log* histo*")
         else:
             if args.serial:
-                callSerialRegression()
+                callSerialRegression(args)
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
                 compareResults("serial", test)
             else:
-                callParallelRegression()
+                callParallelRegression(args)
                 if test == "restart_NACA0012":
                     os.system("mv history* history.dat")
                 compareResults("parallel", test)
@@ -66,7 +66,7 @@ def main():
     return
 
 
-def callSerialRegression():
+def callSerialRegression(args):
 
     if os.path.isfile("fsi.cfg"):
         os.system("python3 {} -f fsi.cfg > log.txt".format(args.fileExec))
@@ -77,7 +77,7 @@ def callSerialRegression():
 
     return
 
-def callParallelRegression():
+def callParallelRegression(args):
 
     if os.path.isfile("fsi.cfg"):
         os.system("mpirun -np {} python3 {} --parallel -f fsi.cfg > log.txt".format(args.np, args.fileExec))
