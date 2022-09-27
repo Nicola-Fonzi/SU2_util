@@ -31,12 +31,16 @@ plot_eig = 1;  % If this is set, we will create a figure with the eigenvalues as
 plot_time = 0; % If this is set, we will plot, per each Mach number, time histories
 plot_fft = 0;  % If this is set, we will plot the FFT per each Mach number
 
+nmodes = 2;
+
 index=1;
 for i = 1:length(Folders)
     filename_modal = strcat(Folders{i},filesep,'StructHistoryModal.dat');
     filename_pch = strcat(Folders{i},filesep,'modal.pch');
     grid_id = 11; % This is the ID of the rotation axis point... check the FEM model to see
     [t,ux,uy,uz,vx,vy,vz,ax,ay,az,uxr,uyr,uzr] = readHistoryNodal(path,filename_modal,filename_pch,grid_id);
+    [~,q1] = readHistoryModal(filename_modal,nmodes,1,false);
+    [~,q2] = readHistoryModal(filename_modal,nmodes,2,false);
     h = uy;
     alpha = uzr;
     su2(i).U = sqrt(1.4*287*273)*Ma(i);
@@ -59,55 +63,41 @@ for i = 1:length(Folders)
     t = t(i0:end);
     h = h(i0:end);
     alpha = alpha(i0:end);
-    % This is the mode shape, in terms of rotation and displacement of the
-    % master node, at zero velocity. We use it to track the modes in the
-    % FFT and correctly compute the eigenvalues.
-    X_h = [-0.976826465486179; -0.214032839362979];
-    X_a = [0.133783443383256; -0.991010590395743];
+
     Fs = 1/(t(2)-t(1));
-    L = length(h);
-    H = fft(h);
-    H = abs(H/L);
-    H = H(1:floor(L/2)+1);
-    H = 2*H;
+    L = length(q1);
+    Q1 = fft(q1');
+    Q1 = abs(Q1/L);
+    Q1 = Q1(1:floor(L/2)+1);
+    Q1 = 2*Q1;
     FreqVect = Fs*(0:floor(L/2))/L;
-    [pksH,locsH] = findpeaks(H,FreqVect);
-    A = fft(alpha);
-    A = abs(A/L);
-    A = A(1:floor(L/2)+1);
-    A = 2*A;
-    [pksA,locsA] = findpeaks(A,FreqVect);
-    pks = [pksH spline(FreqVect,H,locsA); spline(FreqVect,A,locsH) pksA];
+    [pksH,locsH] = findpeaks(Q1,FreqVect);
+    Q2 = fft(q2');
+    Q2 = abs(Q2/L);
+    Q2 = Q2(1:floor(L/2)+1);
+    Q2 = 2*Q2;
+    [pksA,locsA] = findpeaks(Q2,FreqVect);
+    pks = [pksH spline(FreqVect,Q1,locsA); spline(FreqVect,Q2,locsH) pksA];
     locs = [locsH,locsA];
     [locs,ia] = unique(locs);
     pks = pks(:,ia);
-    n = size(pks,2);
-    rr_h = zeros(1,n);
-    rr_a = zeros(1,n);
-    % After the peaks have been found in the FFT, we project everything
-    % using the mode shapes above and extract the correct frequencies for
-    % the modes
-    for j = 1:n
-        rr_h(j) = abs(X_h'*pks(:,j)) / (norm(X_h)*norm(pks(:,j)));
-        rr_a(j) = abs(X_a'*pks(:,j)) / (norm(X_a)*norm(pks(:,j)));
-    end
-    [~,ii_h] = max(rr_h);
-    [~,ii_a] = max(rr_a);
+    [~,ii_h] = max(pks(1,:));
+    [~,ii_a] = max(pks(2,:));
     f_h(index)= locs(ii_h);
     f_alpha(index)= locs(ii_a);
     if plot_fft
         figure
         title(strcat('Mach = ',num2str(velocities(index)/sqrt(1.4*287*273))))
         subplot(2,1,1)       
-        plot(FreqVect,H)
+        plot(FreqVect,Q1)
         xlim([0,20]);
         xlabel('Frequency [Hz]')
-        ylabel('Plunge [m]')
+        ylabel('Q_1 [-]')
         subplot(2,1,2)
-        plot(FreqVect,A)
+        plot(FreqVect,Q2)
         xlim([0,20]);
         xlabel('Frequency [Hz]')
-        ylabel('\alpha [deg]')
+        ylabel('Q_2 [-]')
     end
         index=index+1;
 end
