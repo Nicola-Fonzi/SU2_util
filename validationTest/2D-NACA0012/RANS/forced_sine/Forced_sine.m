@@ -25,7 +25,7 @@ data = textscan(fid,'%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%
                 'HeaderLines',2,'Delimiter',',');
 fclose(fid);
 t_iter = data{1};
-CL = data{11};
+CL = data{12};
 temp = t_iter(2:end) - t_iter(1:end-1);
 CL = CL(temp==1);
 iter = t_iter(temp==1);
