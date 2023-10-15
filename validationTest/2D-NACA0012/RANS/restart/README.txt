@@ -1,0 +1,1 @@
+Use the forced sine script in the forced sine folder to compare
